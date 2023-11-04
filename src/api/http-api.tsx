@@ -19,4 +19,14 @@ export default class Api {
 
         return res.json();
     }
+
+    public static async getTableBycode(code : string) {
+        try {
+            const response = await this.get(`tables/${code}`);
+            
+            return response;
+        } catch (e) {
+            console.log((e as Error).message);
+        }
+    }
 }
