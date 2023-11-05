@@ -27,47 +27,47 @@ export default class Product {
     }
 
     public static parseJson(json: any) : Product {
-        if (!json.id) {
+        if (json.id == null) {
             throw new Error('id is required');
         }
         const id : number = json.id;
 
-        if (!json.name) {
+        if (json.name == null) {
             throw new Error('name is required');
         }
         const name: string = json.name;
 
-        if (!json.description) {
+        if (json.description == null) {
             throw new Error('description is required');
         }
         const description: string = json.description;
 
-        if (!json.price) {
+        if (json.price == null) {
             throw new Error('price is required');
         }
         const price : number = json.price;
 
-        if (!json.image) {
+        if (json.image == null) {
             throw new Error('image is required');
         }
         const image: string = json.image;
 
-        if (!json.status_id) {
+        if (json.status_id == null) {
             throw new Error('status_id is required');
         }
         const statusId : number = json.status_id;
 
-        if (!json.restaurant_id) {
+        if (json.restaurant_id == null) {
             throw new Error('restaurant_id is required');
         }
         const restaurantId : number = json.restaurant_id;
 
-        if (!json.created_at) {
+        if (json.created_at == null) {
             throw new Error('created_at is required');
         }
         const createdAt : string = json.created_at;
 
-        if (!json.updated_at) {
+        if (json.updated_at == null) {
             throw new Error('updated_at is required');
         }
         const updatedAt : string = json.updated_at;

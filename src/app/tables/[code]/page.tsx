@@ -9,12 +9,15 @@ import styles from './table.module.css';
 import { useEffect, useState } from 'react';
 import Loading from '../../loading';
 import { socket } from '../../../api/sokcet';
+import SessionUser from '../../../models/sessionUser';
 
 
 export default function TablePage({ params }: { params: { code: string } }) {
     const tableCode = params.code;
     const [table, setTable] = useState<Table | null>(null);
     const [counter, setCounter] = useState(0);
+
+    let sessionUsers : SessionUser[] = [];
 
     useEffect(() => {
         Api.getTableBycode(tableCode).then((response) => {
@@ -44,6 +47,18 @@ export default function TablePage({ params }: { params: { code: string } }) {
 
         function onUsers(data: any) {
             console.log(data);
+
+            if (data.sessionUsers) {
+                if (data.sessionUsers && Array.isArray(data.sessionUsers)) {
+                    sessionUsers = [];
+
+                    data.sessionUsers.forEach((sessionUser: any) => {
+                        sessionUsers.push(SessionUser.parseJson(sessionUser));
+                    });
+
+                    console.log(sessionUsers);
+                }
+            }
         }
 
         socket.on('users', onUsers);
