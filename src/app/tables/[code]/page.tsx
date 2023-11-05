@@ -50,7 +50,7 @@ export default function TablePage({ params }: { params: { code: string } }) {
 
             if (data.sessionUsers) {
                 if (data.sessionUsers && Array.isArray(data.sessionUsers)) {
-                    let newSessionUsers : SessionUser[] = [];
+                    let newSessionUsers: SessionUser[] = [];
                     data.sessionUsers.forEach((sessionUser: any) => {
                         newSessionUsers.push(SessionUser.parseJson(sessionUser));
                     });
@@ -83,7 +83,7 @@ export default function TablePage({ params }: { params: { code: string } }) {
                                 src={table.restaurant!.image}
                                 sizes="(max-width: 768px) 100vw, 33vw"
                                 fill
-                                priority={false}
+                                priority={true}
                                 alt={`Imagem de ${table.restaurant!.name}`}
                             />
                         </div>
@@ -93,30 +93,36 @@ export default function TablePage({ params }: { params: { code: string } }) {
                                 {table.restaurant!.description}
                             </p>
                         </div>
+
+                        <div className={styles.tableNumber}>
+                            Mesa {table!.number}
+                        </div>
+
+                        <div className={styles.sessionUserGroupContainter}>
+                            {sessionUsers.map((sessionUser, index) => {
+                                return (
+                                    <div key={index} className={styles.sessionUserContainter}>
+                                        <div className={styles.sessionUserItemContainter}>
+                                            <Image
+                                                className={styles.sessionUserImage}
+                                                src={'/images/avatar_' + sessionUser.user!.imageId + '.png'}
+                                                width={40}
+                                                height={40}
+                                                priority={false}
+                                                alt={`Imagem de perfil de ${sessionUser.user!.name}`}
+                                            />
+                                            <span className={styles.sessionUserName}>{sessionUser.user!.name}</span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                     :
                     <Loading></Loading>
             }
 
             <button onClick={() => setCounter(counter + 1)}>click {counter}</button>
-
-            <div className={styles.sessionUserGroupContainter}>
-                {sessionUsers.map((sessionUser, index) => {
-                    return (
-                        <div key={index} className={styles.sessionUserContainter}>
-                            <Image
-                                className={styles.sessionUserImage}
-                                src={'/images/avatar_' + sessionUser.user!.imageId + '.png'}
-                                width={40}
-                                height={40}
-                                priority={false}
-                                alt={`Imagem de perfil de ${sessionUser.user!.name}`}
-                            />
-                            <span className={styles.sessionUserName}>{sessionUser.user!.name}</span>
-                        </div>
-                    );
-                })}
-            </div>
         </>
     );
 }

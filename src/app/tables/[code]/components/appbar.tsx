@@ -21,7 +21,7 @@ export default function TableAppBar(props : any) {
                     >
                         <ArrowBack style={{color: '#000000'}} />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'SofiaProLight', color: '#000000'}}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'SofiaProLight', fontWeight: 'bolder', color: '#000000'}}>
                         {title}
                     </Typography>
                 </Toolbar>
