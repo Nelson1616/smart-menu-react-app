@@ -1,6 +1,6 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Api from '../../../api/http-api';
 import Table from '../../../models/table';
 import TableAppBar from './components/appbar';
@@ -13,9 +13,12 @@ import SessionUser from '../../../models/sessionUser';
 import ImageSelector from './components/imageSelector';
 import NameTextField from './components/nameTextField';
 import { Button } from '@mui/material';
+import { setCookie } from '../../../utils/cookie';
 
 
 export default function TablePage({ params }: { params: { code: string } }) {
+    const router = useRouter();
+
     const tableCode = params.code;
     const [table, setTable] = useState<Table | null>(null);
     const [counter, setCounter] = useState(0);
@@ -34,22 +37,48 @@ export default function TablePage({ params }: { params: { code: string } }) {
         setProfileName(value);
     }
 
+    function enterTable() {
+        Api.enterTableBycode(params.code, profileName, Number(profileImageSelected)).then((response) => {
+            if (!response.success) {
+                router.push('/');
+            }
+
+            if (!(response.data.sessionUser)) {
+                router.push('/');
+            }
+
+            const sessionUser : SessionUser = SessionUser.parseJson(response.data.sessionUser);
+
+            setCookie('sessionUserId', `${sessionUser.id}`, 30);
+
+            console.log('cookies', document.cookie);
+
+            console.log('sessionUser', sessionUser);
+
+            router.push('/session');
+
+        }).catch(error => {
+            console.log(error);
+            router.push('/');
+        });
+    }
+
     useEffect(() => {
         Api.getTableBycode(tableCode).then((response) => {
             if (!response.success) {
-                redirect('/');
+                router.push('/');
             }
 
             const tableUpdated: Table = Table.parseJson(response.data);
 
             if (tableUpdated.restaurant == null) {
-                redirect('/');
+                router.push('/');
             }
 
             setTable(tableUpdated);
         }).catch(error => {
             console.log(error);
-            redirect('/');
+            router.push('/');
         });
 
         if (socket.disconnected) {
@@ -89,8 +118,6 @@ export default function TablePage({ params }: { params: { code: string } }) {
             <TableAppBar
                 title={table ? table.restaurant!.name : 'Loading'}
             />
-
-            <button onClick={() => setCounter(counter + 1)}>click {counter}</button>
 
             {
                 table ?
@@ -191,18 +218,22 @@ export default function TablePage({ params }: { params: { code: string } }) {
                             <NameTextField handleChange={onNameChanged} />
 
                             <div className={styles.enterButtonContainer}>
-                                <Button variant="contained" sx={[{
-                                    '&:hover': {
-                                        backgroundColor: 'white',
-                                    },
-                                }, {
-                                    borderRadius: 50,
-                                    backgroundColor: '#FBEBEB',
-                                    color: '#ED2939',
-                                    fontSize: '20px',
-                                    width: 300,
-                                    padding: '25px'
-                                }]}>ENTRAR</Button>
+                                <Button
+                                    variant="contained"
+                                    sx={[{
+                                        '&:hover': {
+                                            backgroundColor: 'white',
+                                        },
+                                    }, {
+                                        borderRadius: 50,
+                                        backgroundColor: '#FBEBEB',
+                                        color: '#ED2939',
+                                        fontSize: '20px',
+                                        width: 300,
+                                        padding: '25px'
+                                    }]}
+                                    onClick={enterTable}
+                                >ENTRAR</Button>
                             </div>
                         </div>
                     </>
