@@ -1,0 +1,19 @@
+.imageBox {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    aspect-ratio: 70/45;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.mainContainer {
+    margin: 10px;
+}
+
+.descriptionBox {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}

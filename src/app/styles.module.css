@@ -1,0 +1,8 @@
+@font-face {
+    font-family: SofiaProLight;
+    src: url(../public/fonts/sofiapro-light.otf);
+}
+
+.mainLayout {
+    margin: 0;
+}

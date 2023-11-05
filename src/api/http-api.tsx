@@ -7,6 +7,7 @@ export default class Api {
         }
 
         const res = await fetch(this.addr + path, {
+            cache: 'no-store',
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
