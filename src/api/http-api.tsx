@@ -1,12 +1,14 @@
 export default class Api {
-    private static addr: string = 'https://smartmenu.nntech.online/api';
+    public static url: string = 'https://smartmenu.nntech.online';
 
     public static async get(path: string): Promise<any> {
         if (path[0] != '/') {
             path = '/' + path;
         }
 
-        const res = await fetch(this.addr + path, {
+        console.log('making get request to: ' + this.url + '/api' + path);
+
+        const res = await fetch(this.url + '/api' + path, {
             cache: 'no-store',
             method: 'GET',
             headers: {
