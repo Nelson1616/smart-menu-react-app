@@ -17,7 +17,7 @@ export default function TablePage({ params }: { params: { code: string } }) {
     const [table, setTable] = useState<Table | null>(null);
     const [counter, setCounter] = useState(0);
 
-    let sessionUsers : SessionUser[] = [];
+    const [sessionUsers, setSessionUsers] = useState<SessionUser[]>([]);
 
     useEffect(() => {
         Api.getTableBycode(tableCode).then((response) => {
@@ -46,17 +46,16 @@ export default function TablePage({ params }: { params: { code: string } }) {
         }
 
         function onUsers(data: any) {
-            console.log(data);
+            console.log('socket onUsers');
 
             if (data.sessionUsers) {
                 if (data.sessionUsers && Array.isArray(data.sessionUsers)) {
-                    sessionUsers = [];
-
+                    let newSessionUsers : SessionUser[] = [];
                     data.sessionUsers.forEach((sessionUser: any) => {
-                        sessionUsers.push(SessionUser.parseJson(sessionUser));
+                        newSessionUsers.push(SessionUser.parseJson(sessionUser));
                     });
 
-                    console.log(sessionUsers);
+                    setSessionUsers(newSessionUsers);
                 }
             }
         }
@@ -100,6 +99,24 @@ export default function TablePage({ params }: { params: { code: string } }) {
             }
 
             <button onClick={() => setCounter(counter + 1)}>click {counter}</button>
+
+            <div className={styles.sessionUserGroupContainter}>
+                {sessionUsers.map((sessionUser, index) => {
+                    return (
+                        <div key={index} className={styles.sessionUserContainter}>
+                            <Image
+                                className={styles.sessionUserImage}
+                                src={'/images/avatar_' + sessionUser.user!.imageId + '.png'}
+                                width={40}
+                                height={40}
+                                priority={false}
+                                alt={`Imagem de perfil de ${sessionUser.user!.name}`}
+                            />
+                            <span className={styles.sessionUserName}>{sessionUser.user!.name}</span>
+                        </div>
+                    );
+                })}
+            </div>
         </>
     );
 }
