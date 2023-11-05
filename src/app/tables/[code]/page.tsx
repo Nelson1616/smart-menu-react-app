@@ -117,6 +117,31 @@ export default function TablePage({ params }: { params: { code: string } }) {
                                 );
                             })}
                         </div>
+
+                        <div>
+                            {table.restaurant?.products.map((product, index) => {
+                                return (
+                                    <div key={index} className={styles.productContainter}>
+                                        <Image
+                                            className={styles.productImage}
+                                            src={product.image}
+                                            width={160}
+                                            height={160}
+                                            priority={false}
+                                            alt={`Imagem de produto ${product.name}`}
+                                        />
+                                        <div>
+                                            <p className={styles.productTitle}>{product.name}</p>
+
+                                            <p>{product.description}</p>
+
+                                            <p className={styles.productPrice}>R$ {product.price / 100}</p>
+                                        </div>
+
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                     :
                     <Loading></Loading>
