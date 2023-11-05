@@ -1,5 +1,5 @@
 export default class Api {
-    public static url: string = 'https://smartmenu.nntech.online';
+    public static url: string = 'https://smartmenuapi.nntech.online';
 
     public static async get(path: string): Promise<any> {
         if (path[0] != '/') {

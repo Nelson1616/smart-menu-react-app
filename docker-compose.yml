@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
     # image project
-    app:
+    smaert-menu-react-app:
         build:
             context: .
             dockerfile: Dockerfile
         restart: unless-stopped
         command: sh -c "npm install && npm run dev"
-        container_name: app
+        container_name: smaert-menu-react-app
         volumes:
             - ./src:/src/
         networks:
@@ -22,7 +22,7 @@ services:
         networks:
             - appnet
         depends_on:
-            - app
+            - smaert-menu-react-app
 
 networks:
     appnet:
